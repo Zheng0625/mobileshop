@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mobileshop.dao.MsGoodsMapper">
+    <resultMap id="BaseResultMap" type="com.zyb.mobileshop.entity.MsGoods">
+        <id column="goods_id" jdbcType="INTEGER" property="goodsId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sn" jdbcType="VARCHAR" property="sn"/>
+        <result column="brief" jdbcType="VARCHAR" property="brief"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+        <result column="mktprice" jdbcType="DECIMAL" property="mktprice"/>
+        <result column="mkt_enable" jdbcType="TINYINT" property="mktEnable"/>
+        <result column="cat_id" jdbcType="INTEGER" property="catId"/>
+        <result column="brand_id" jdbcType="INTEGER" property="brandId"/>
+        <result column="weight" jdbcType="DECIMAL" property="weight"/>
+        <result column="creatime" jdbcType="TIMESTAMP" property="creatime"/>
+        <result column="last_modify" jdbcType="TIMESTAMP" property="lastModify"/>
+        <result column="view_count" jdbcType="INTEGER" property="viewCount"/>
+        <result column="buy_count" jdbcType="INTEGER" property="buyCount"/>
+        <result column="thumbnail" jdbcType="VARCHAR" property="thumbnail"/>
+        <result column="big" jdbcType="VARCHAR" property="big"/>
+        <result column="small" jdbcType="VARCHAR" property="small"/>
+        <result column="orinal" jdbcType="VARCHAR" property="orinal"/>
+        <association property="briefGoodsCat"
+                     javaType="com.zyb.mobileshop.entity.brief.BriefGoodsCat">
+            <id property="cat_id" column="cat_id"/>
+            <result property="name" column="cat_name"/>
+        </association>
+        <association property="briefBrand"
+                     javaType="com.zyb.mobileshop.entity.brief.BriefBrand">
+            <id property="brand_id" column="brand_id"/>
+            <result property="name" column="brand_name"/>
+        </association>
+        <association property="briefGoodsCat2"
+                     javaType="com.zyb.mobileshop.entity.brief.BriefGoodsCat">
+            <id property="cat_id" column="parent_cat_id"/>
+            <result property="name" column="parent_cat_name"/>
+        </association>
+        <association property="goodStore"
+                     javaType="com.zyb.mobileshop.entity.MsGoodsStore">
+            <id property="store_id" column="storeId"/>
+            <result property="store" column="store"/>
+            <result property="enable_store" column="enableStore"/>
+        </association>
+        <collection property="gis"
+                    javaType="java.util.List"
+                    ofType="com.zyb.mobileshop.entity.MsGoodsImg">
+            <id property="img_id" column="img_id"/>
+            <result property="goods_id" column="goodsId"/>
+            <result property="thumbnail" column="thumbnail"/>
+            <result property="big" column="big"/>
+            <result property="small" column="small"/>
+            <result property="original" column="original"/>
+            <result property="isdefault" column="isdefault"/>
+        </collection>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zyb.mobileshop.entity.MsGoodsWithBLOBs">
+        <result column="description" jdbcType="LONGVARCHAR" property="description"/>
+        <result column="intro" jdbcType="LONGVARCHAR" property="intro"/>
+        <result column="params" jdbcType="LONGVARCHAR" property="params"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    goods_id, name, sn, brief, price, cost, mktprice, mkt_enable, cat_id, brand_id, weight, 
+    creatime, last_modify, view_count, buy_count, thumbnail, big, small, orinal
+  </sql>
+    <sql id="Blob_Column_List">
+    description, intro, params
+  </sql>
+    <select id="selectByExampleWithBLOBs" parameterType="com.zyb.mobileshop.entity.MsGoodsExample"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from ms_goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" parameterType="com.zyb.mobileshop.entity.MsGoodsExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from ms_goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from ms_goods
+        where goods_id = #{goodsId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ms_goods
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.zyb.mobileshop.entity.MsGoodsExample">
+        delete from ms_goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.zyb.mobileshop.entity.MsGoodsWithBLOBs">
+    insert into ms_goods (goods_id, name, sn, 
+      brief, price, cost, 
+      mktprice, mkt_enable, cat_id, 
+      brand_id, weight, creatime, 
+      last_modify, view_count, buy_count, 
+      thumbnail, big, small, 
+      orinal, description, intro, 
+      params)
+    values (#{goodsId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, 
+      #{brief,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{cost,jdbcType=DECIMAL}, 
+      #{mktprice,jdbcType=DECIMAL}, #{mktEnable,jdbcType=TINYINT}, #{catId,jdbcType=INTEGER}, 
+      #{brandId,jdbcType=INTEGER}, #{weight,jdbcType=DECIMAL}, #{creatime,jdbcType=TIMESTAMP}, 
+      #{lastModify,jdbcType=TIMESTAMP}, #{viewCount,jdbcType=INTEGER}, #{buyCount,jdbcType=INTEGER}, 
+      #{thumbnail,jdbcType=VARCHAR}, #{big,jdbcType=VARCHAR}, #{small,jdbcType=VARCHAR}, 
+      #{orinal,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}, #{intro,jdbcType=LONGVARCHAR}, 
+      #{params,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.zyb.mobileshop.entity.MsGoodsWithBLOBs">
+        insert into ms_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="sn != null">
+                sn,
+            </if>
+            <if test="brief != null">
+                brief,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="cost != null">
+                cost,
+            </if>
+            <if test="mktprice != null">
+                mktprice,
+            </if>
+            <if test="mktEnable != null">
+                mkt_enable,
+            </if>
+            <if test="catId != null">
+                cat_id,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="creatime != null">
+                creatime,
+            </if>
+            <if test="lastModify != null">
+                last_modify,
+            </if>
+            <if test="viewCount != null">
+                view_count,
+            </if>
+            <if test="buyCount != null">
+                buy_count,
+            </if>
+            <if test="thumbnail != null">
+                thumbnail,
+            </if>
+            <if test="big != null">
+                big,
+            </if>
+            <if test="small != null">
+                small,
+            </if>
+            <if test="orinal != null">
+                orinal,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="intro != null">
+                intro,
+            </if>
+            <if test="params != null">
+                params,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="sn != null">
+                #{sn,jdbcType=VARCHAR},
+            </if>
+            <if test="brief != null">
+                #{brief,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="cost != null">
+                #{cost,jdbcType=DECIMAL},
+            </if>
+            <if test="mktprice != null">
+                #{mktprice,jdbcType=DECIMAL},
+            </if>
+            <if test="mktEnable != null">
+                #{mktEnable,jdbcType=TINYINT},
+            </if>
+            <if test="catId != null">
+                #{catId,jdbcType=INTEGER},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=INTEGER},
+            </if>
+            <if test="weight != null">
+                #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="creatime != null">
+                #{creatime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastModify != null">
+                #{lastModify,jdbcType=TIMESTAMP},
+            </if>
+            <if test="viewCount != null">
+                #{viewCount,jdbcType=INTEGER},
+            </if>
+            <if test="buyCount != null">
+                #{buyCount,jdbcType=INTEGER},
+            </if>
+            <if test="thumbnail != null">
+                #{thumbnail,jdbcType=VARCHAR},
+            </if>
+            <if test="big != null">
+                #{big,jdbcType=VARCHAR},
+            </if>
+            <if test="small != null">
+                #{small,jdbcType=VARCHAR},
+            </if>
+            <if test="orinal != null">
+                #{orinal,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="intro != null">
+                #{intro,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="params != null">
+                #{params,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.zyb.mobileshop.entity.MsGoodsExample" resultType="java.lang.Long">
+        select count(*) from ms_goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update ms_goods
+        <set>
+            <if test="record.goodsId != null">
+                goods_id = #{record.goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sn != null">
+                sn = #{record.sn,jdbcType=VARCHAR},
+            </if>
+            <if test="record.brief != null">
+                brief = #{record.brief,jdbcType=VARCHAR},
+            </if>
+            <if test="record.price != null">
+                price = #{record.price,jdbcType=DECIMAL},
+            </if>
+            <if test="record.cost != null">
+                cost = #{record.cost,jdbcType=DECIMAL},
+            </if>
+            <if test="record.mktprice != null">
+                mktprice = #{record.mktprice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.mktEnable != null">
+                mkt_enable = #{record.mktEnable,jdbcType=TINYINT},
+            </if>
+            <if test="record.catId != null">
+                cat_id = #{record.catId,jdbcType=INTEGER},
+            </if>
+            <if test="record.brandId != null">
+                brand_id = #{record.brandId,jdbcType=INTEGER},
+            </if>
+            <if test="record.weight != null">
+                weight = #{record.weight,jdbcType=DECIMAL},
+            </if>
+            <if test="record.creatime != null">
+                creatime = #{record.creatime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.lastModify != null">
+                last_modify = #{record.lastModify,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.viewCount != null">
+                view_count = #{record.viewCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.buyCount != null">
+                buy_count = #{record.buyCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.thumbnail != null">
+                thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
+            </if>
+            <if test="record.big != null">
+                big = #{record.big,jdbcType=VARCHAR},
+            </if>
+            <if test="record.small != null">
+                small = #{record.small,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orinal != null">
+                orinal = #{record.orinal,jdbcType=VARCHAR},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.intro != null">
+                intro = #{record.intro,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.params != null">
+                params = #{record.params,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update ms_goods
+        set goods_id = #{record.goodsId,jdbcType=INTEGER},
+        name = #{record.name,jdbcType=VARCHAR},
+        sn = #{record.sn,jdbcType=VARCHAR},
+        brief = #{record.brief,jdbcType=VARCHAR},
+        price = #{record.price,jdbcType=DECIMAL},
+        cost = #{record.cost,jdbcType=DECIMAL},
+        mktprice = #{record.mktprice,jdbcType=DECIMAL},
+        mkt_enable = #{record.mktEnable,jdbcType=TINYINT},
+        cat_id = #{record.catId,jdbcType=INTEGER},
+        brand_id = #{record.brandId,jdbcType=INTEGER},
+        weight = #{record.weight,jdbcType=DECIMAL},
+        creatime = #{record.creatime,jdbcType=TIMESTAMP},
+        last_modify = #{record.lastModify,jdbcType=TIMESTAMP},
+        view_count = #{record.viewCount,jdbcType=INTEGER},
+        buy_count = #{record.buyCount,jdbcType=INTEGER},
+        thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
+        big = #{record.big,jdbcType=VARCHAR},
+        small = #{record.small,jdbcType=VARCHAR},
+        orinal = #{record.orinal,jdbcType=VARCHAR},
+        description = #{record.description,jdbcType=LONGVARCHAR},
+        intro = #{record.intro,jdbcType=LONGVARCHAR},
+        params = #{record.params,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update ms_goods
+        set goods_id = #{record.goodsId,jdbcType=INTEGER},
+        name = #{record.name,jdbcType=VARCHAR},
+        sn = #{record.sn,jdbcType=VARCHAR},
+        brief = #{record.brief,jdbcType=VARCHAR},
+        price = #{record.price,jdbcType=DECIMAL},
+        cost = #{record.cost,jdbcType=DECIMAL},
+        mktprice = #{record.mktprice,jdbcType=DECIMAL},
+        mkt_enable = #{record.mktEnable,jdbcType=TINYINT},
+        cat_id = #{record.catId,jdbcType=INTEGER},
+        brand_id = #{record.brandId,jdbcType=INTEGER},
+        weight = #{record.weight,jdbcType=DECIMAL},
+        creatime = #{record.creatime,jdbcType=TIMESTAMP},
+        last_modify = #{record.lastModify,jdbcType=TIMESTAMP},
+        view_count = #{record.viewCount,jdbcType=INTEGER},
+        buy_count = #{record.buyCount,jdbcType=INTEGER},
+        thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
+        big = #{record.big,jdbcType=VARCHAR},
+        small = #{record.small,jdbcType=VARCHAR},
+        orinal = #{record.orinal,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.zyb.mobileshop.entity.MsGoodsWithBLOBs">
+        update ms_goods
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="sn != null">
+                sn = #{sn,jdbcType=VARCHAR},
+            </if>
+            <if test="brief != null">
+                brief = #{brief,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="cost != null">
+                cost = #{cost,jdbcType=DECIMAL},
+            </if>
+            <if test="mktprice != null">
+                mktprice = #{mktprice,jdbcType=DECIMAL},
+            </if>
+            <if test="mktEnable != null">
+                mkt_enable = #{mktEnable,jdbcType=TINYINT},
+            </if>
+            <if test="catId != null">
+                cat_id = #{catId,jdbcType=INTEGER},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=INTEGER},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="creatime != null">
+                creatime = #{creatime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastModify != null">
+                last_modify = #{lastModify,jdbcType=TIMESTAMP},
+            </if>
+            <if test="viewCount != null">
+                view_count = #{viewCount,jdbcType=INTEGER},
+            </if>
+            <if test="buyCount != null">
+                buy_count = #{buyCount,jdbcType=INTEGER},
+            </if>
+            <if test="thumbnail != null">
+                thumbnail = #{thumbnail,jdbcType=VARCHAR},
+            </if>
+            <if test="big != null">
+                big = #{big,jdbcType=VARCHAR},
+            </if>
+            <if test="small != null">
+                small = #{small,jdbcType=VARCHAR},
+            </if>
+            <if test="orinal != null">
+                orinal = #{orinal,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="intro != null">
+                intro = #{intro,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="params != null">
+                params = #{params,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where goods_id = #{goodsId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zyb.mobileshop.entity.MsGoodsWithBLOBs">
+    update ms_goods
+    set name = #{name,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      brief = #{brief,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      cost = #{cost,jdbcType=DECIMAL},
+      mktprice = #{mktprice,jdbcType=DECIMAL},
+      mkt_enable = #{mktEnable,jdbcType=TINYINT},
+      cat_id = #{catId,jdbcType=INTEGER},
+      brand_id = #{brandId,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=DECIMAL},
+      creatime = #{creatime,jdbcType=TIMESTAMP},
+      last_modify = #{lastModify,jdbcType=TIMESTAMP},
+      view_count = #{viewCount,jdbcType=INTEGER},
+      buy_count = #{buyCount,jdbcType=INTEGER},
+      thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      big = #{big,jdbcType=VARCHAR},
+      small = #{small,jdbcType=VARCHAR},
+      orinal = #{orinal,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR},
+      intro = #{intro,jdbcType=LONGVARCHAR},
+      params = #{params,jdbcType=LONGVARCHAR}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.zyb.mobileshop.entity.MsGoods">
+    update ms_goods
+    set name = #{name,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      brief = #{brief,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      cost = #{cost,jdbcType=DECIMAL},
+      mktprice = #{mktprice,jdbcType=DECIMAL},
+      mkt_enable = #{mktEnable,jdbcType=TINYINT},
+      cat_id = #{catId,jdbcType=INTEGER},
+      brand_id = #{brandId,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=DECIMAL},
+      creatime = #{creatime,jdbcType=TIMESTAMP},
+      last_modify = #{lastModify,jdbcType=TIMESTAMP},
+      view_count = #{viewCount,jdbcType=INTEGER},
+      buy_count = #{buyCount,jdbcType=INTEGER},
+      thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      big = #{big,jdbcType=VARCHAR},
+      small = #{small,jdbcType=VARCHAR},
+      orinal = #{orinal,jdbcType=VARCHAR}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+    <select id="dynamicFind" parameterType="map"
+            resultType="com.zyb.mobileshop.entity.brief.BriefGoods" resultMap="BaseResultMap">
+        select goods_id,name,price,small,mkt_enable
+        from ms_goods
+        <where>
+            <if test="catId!=null">
+                cat_id=#{catId}
+            </if>
+            <if test="brandId!=null">
+                and brand_id=#{brandId}
+            </if>
+            <if test="name!=null">
+                and name like #{name}
+            </if>
+            <if test="mktEnable!=null">
+                and mkt_enable=#{mktEnable}
+            </if>
+        </where>
+    </select>
+    <select id="findByName" parameterType="string"
+            resultType="com.zyb.mobileshop.entity.brief.BriefGoods" resultMap="BaseResultMap">
+		select goods_id,name,price from ms_goods where name=#{name}
+	</select>
+
+    <select id="findUnionByPage" parameterType="com.zyb.mobileshop.util.Page" resultMap="BaseResultMap">
+        select mg.goods_id,mg.name,mg.price,mg.mkt_enable,
+		mgc.cat_id,mgc.name cat_name,mb.brand_id,mb.name brand_name
+		from ms_goods mg
+		join ms_goods_cat mgc
+		on mg.cat_id=mgc.cat_id
+		join ms_brand mb
+		on mg.brand_id=mb.brand_id
+		limit #{begin},#{pageSize}
+    </select>
+
+    <select id="findUnionById" parameterType="int" resultMap="BaseResultMap">
+		select mg.*,
+		mb.brand_id,mb.name brand_name,
+		mgc.cat_id,mgc.name cat_name,
+		mgc2.cat_id parent_cat_id,mgc2.name parent_cat_name,
+		mgi.*,
+		mgs.store_id,mgs.store,mgs.enable_store
+		from ms_goods mg
+		left outer join ms_goods_cat mgc
+		on mg.cat_id=mgc.cat_id
+		left outer join ms_brand mb
+		on mg.brand_id=mb.brand_id
+		left outer join ms_goods_cat mgc2
+		on mgc.parent_id=mgc2.cat_id
+		left outer join ms_goods_img mgi
+		on mg.goods_id=mgi.goods_id
+		left outer join ms_goods_store mgs
+		on mg.goods_id=mgs.goods_id
+		where mg.goods_id=#{goodsId}
+	</select>
+</mapper>

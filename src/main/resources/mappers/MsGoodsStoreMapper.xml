@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mobileshop.dao.MsGoodsStoreMapper">
+  <resultMap id="BaseResultMap" type="com.zyb.mobileshop.entity.MsGoodsStore">
+    <id column="store_id" jdbcType="INTEGER" property="storeId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="store" jdbcType="INTEGER" property="store" />
+    <result column="enable_store" jdbcType="INTEGER" property="enableStore" />
+    <result column="operate_type" jdbcType="TINYINT" property="operateType" />
+    <result column="intime" jdbcType="TIMESTAMP" property="intime" />
+    <result column="outtime" jdbcType="TIMESTAMP" property="outtime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    store_id, goods_id, store, enable_store, operate_type, intime, outtime
+  </sql>
+  <select id="selectByExample" parameterType="com.zyb.mobileshop.entity.MsGoodsStoreExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ms_goods_store
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ms_goods_store
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ms_goods_store
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zyb.mobileshop.entity.MsGoodsStoreExample">
+    delete from ms_goods_store
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zyb.mobileshop.entity.MsGoodsStore">
+    insert into ms_goods_store (store_id, goods_id, store, 
+      enable_store, operate_type, intime, 
+      outtime)
+    values (#{storeId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{store,jdbcType=INTEGER}, 
+      #{enableStore,jdbcType=INTEGER}, #{operateType,jdbcType=TINYINT}, #{intime,jdbcType=TIMESTAMP}, 
+      #{outtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyb.mobileshop.entity.MsGoodsStore">
+    insert into ms_goods_store
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="store != null">
+        store,
+      </if>
+      <if test="enableStore != null">
+        enable_store,
+      </if>
+      <if test="operateType != null">
+        operate_type,
+      </if>
+      <if test="intime != null">
+        intime,
+      </if>
+      <if test="outtime != null">
+        outtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="storeId != null">
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="store != null">
+        #{store,jdbcType=INTEGER},
+      </if>
+      <if test="enableStore != null">
+        #{enableStore,jdbcType=INTEGER},
+      </if>
+      <if test="operateType != null">
+        #{operateType,jdbcType=TINYINT},
+      </if>
+      <if test="intime != null">
+        #{intime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outtime != null">
+        #{outtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zyb.mobileshop.entity.MsGoodsStoreExample" resultType="java.lang.Long">
+    select count(*) from ms_goods_store
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ms_goods_store
+    <set>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.store != null">
+        store = #{record.store,jdbcType=INTEGER},
+      </if>
+      <if test="record.enableStore != null">
+        enable_store = #{record.enableStore,jdbcType=INTEGER},
+      </if>
+      <if test="record.operateType != null">
+        operate_type = #{record.operateType,jdbcType=TINYINT},
+      </if>
+      <if test="record.intime != null">
+        intime = #{record.intime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.outtime != null">
+        outtime = #{record.outtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ms_goods_store
+    set store_id = #{record.storeId,jdbcType=INTEGER},
+      goods_id = #{record.goodsId,jdbcType=INTEGER},
+      store = #{record.store,jdbcType=INTEGER},
+      enable_store = #{record.enableStore,jdbcType=INTEGER},
+      operate_type = #{record.operateType,jdbcType=TINYINT},
+      intime = #{record.intime,jdbcType=TIMESTAMP},
+      outtime = #{record.outtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyb.mobileshop.entity.MsGoodsStore">
+    update ms_goods_store
+    <set>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="store != null">
+        store = #{store,jdbcType=INTEGER},
+      </if>
+      <if test="enableStore != null">
+        enable_store = #{enableStore,jdbcType=INTEGER},
+      </if>
+      <if test="operateType != null">
+        operate_type = #{operateType,jdbcType=TINYINT},
+      </if>
+      <if test="intime != null">
+        intime = #{intime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outtime != null">
+        outtime = #{outtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyb.mobileshop.entity.MsGoodsStore">
+    update ms_goods_store
+    set goods_id = #{goodsId,jdbcType=INTEGER},
+      store = #{store,jdbcType=INTEGER},
+      enable_store = #{enableStore,jdbcType=INTEGER},
+      operate_type = #{operateType,jdbcType=TINYINT},
+      intime = #{intime,jdbcType=TIMESTAMP},
+      outtime = #{outtime,jdbcType=TIMESTAMP}
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </update>
+  <select id="findByGoodsId" parameterType="int" resultType="com.zyb.mobileshop.entity.MsGoodsStore" resultMap="BaseResultMap">
+    select * from ms_goods_store where goods_id = #{goodsId}
+  </select>
+</mapper>

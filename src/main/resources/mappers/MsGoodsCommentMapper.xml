@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mobileshop.dao.MsGoodsCommentMapper">
+  <resultMap id="BaseResultMap" type="com.zyb.mobileshop.entity.MsGoodsComment">
+    <id column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="score" jdbcType="TINYINT" property="score" />
+    <result column="isopen" jdbcType="TINYINT" property="isopen" />
+    <result column="creatime" jdbcType="TIMESTAMP" property="creatime" />
+    <association property="briefGoods"
+                 javaType="com.zyb.mobileshop.entity.brief.BriefGoods">
+      <id property="goods_id" column="goods_id"/>
+      <result property="name" column="name"/>
+      <result property="price" column="price"/>
+      <result property="mktprice" column="mktprice"/>
+      <result property="small" column="small"/>
+      <result property="mkt_enable" column="mkt_enable"/>
+    </association>
+    <association property="briefMember"
+                 javaType="com.zyb.mobileshop.entity.brief.BriefMember">
+      <id property="member_id" column="member_id"/>
+      <result property="uname" column="uname"/>
+    </association>
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zyb.mobileshop.entity.MsGoodsComment">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    comment_id, order_id, goods_id, member_id, score, isopen, creatime
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.zyb.mobileshop.entity.MsGoodsCommentExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ms_goods_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.zyb.mobileshop.entity.MsGoodsCommentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ms_goods_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ms_goods_comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ms_goods_comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zyb.mobileshop.entity.MsGoodsCommentExample">
+    delete from ms_goods_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zyb.mobileshop.entity.MsGoodsComment">
+    insert into ms_goods_comment (comment_id, order_id, goods_id, 
+      member_id, score, isopen, 
+      creatime, content)
+    values (#{commentId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
+      #{memberId,jdbcType=INTEGER}, #{score,jdbcType=TINYINT}, #{isopen,jdbcType=TINYINT}, 
+      #{creatime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyb.mobileshop.entity.MsGoodsComment">
+    insert into ms_goods_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        comment_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="isopen != null">
+        isopen,
+      </if>
+      <if test="creatime != null">
+        creatime,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        #{commentId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=TINYINT},
+      </if>
+      <if test="isopen != null">
+        #{isopen,jdbcType=TINYINT},
+      </if>
+      <if test="creatime != null">
+        #{creatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zyb.mobileshop.entity.MsGoodsCommentExample" resultType="java.lang.Long">
+    select count(*) from ms_goods_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ms_goods_comment
+    <set>
+      <if test="record.commentId != null">
+        comment_id = #{record.commentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberId != null">
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score,jdbcType=TINYINT},
+      </if>
+      <if test="record.isopen != null">
+        isopen = #{record.isopen,jdbcType=TINYINT},
+      </if>
+      <if test="record.creatime != null">
+        creatime = #{record.creatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update ms_goods_comment
+    set comment_id = #{record.commentId,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      goods_id = #{record.goodsId,jdbcType=INTEGER},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      score = #{record.score,jdbcType=TINYINT},
+      isopen = #{record.isopen,jdbcType=TINYINT},
+      creatime = #{record.creatime,jdbcType=TIMESTAMP},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ms_goods_comment
+    set comment_id = #{record.commentId,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      goods_id = #{record.goodsId,jdbcType=INTEGER},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      score = #{record.score,jdbcType=TINYINT},
+      isopen = #{record.isopen,jdbcType=TINYINT},
+      creatime = #{record.creatime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyb.mobileshop.entity.MsGoodsComment">
+    update ms_goods_comment
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=TINYINT},
+      </if>
+      <if test="isopen != null">
+        isopen = #{isopen,jdbcType=TINYINT},
+      </if>
+      <if test="creatime != null">
+        creatime = #{creatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zyb.mobileshop.entity.MsGoodsComment">
+    update ms_goods_comment
+    set order_id = #{orderId,jdbcType=INTEGER},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      member_id = #{memberId,jdbcType=INTEGER},
+      score = #{score,jdbcType=TINYINT},
+      isopen = #{isopen,jdbcType=TINYINT},
+      creatime = #{creatime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyb.mobileshop.entity.MsGoodsComment">
+    update ms_goods_comment
+    set order_id = #{orderId,jdbcType=INTEGER},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      member_id = #{memberId,jdbcType=INTEGER},
+      score = #{score,jdbcType=TINYINT},
+      isopen = #{isopen,jdbcType=TINYINT},
+      creatime = #{creatime,jdbcType=TIMESTAMP}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+
+  <select id="findUnionByMemberId" parameterType="int" resultMap="BaseResultMap">
+		select mgc.*,mg.goods_id,mg.name,
+		mg.price,mg.mktprice,mg.small,mg.mkt_enable
+		from ms_goods_comment mgc
+		join ms_goods mg
+		on mgc.goods_id=mg.goods_id
+		where member_id=#{memberId}
+	</select>
+
+  <select id="findUnionByGoodsId" parameterType="int" resultMap="BaseResultMap">
+		select mgc.*,mm.uname
+		from ms_goods_comment mgc
+		join ms_member mm
+		on mgc.member_id=mm.member_id
+		where goods_id=#{goodsId}
+	</select>
+</mapper>

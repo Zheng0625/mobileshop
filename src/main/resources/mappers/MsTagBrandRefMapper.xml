@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mobileshop.dao.MsTagBrandRefMapper">
+  <resultMap id="BaseResultMap" type="com.zyb.mobileshop.entity.MsTagBrandRef">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="tag_id" jdbcType="INTEGER" property="tagId" />
+    <result column="brand_id" jdbcType="INTEGER" property="brandId" />
+    <result column="sort" jdbcType="SMALLINT" property="sort" />
+    <result column="creatime" jdbcType="TIMESTAMP" property="creatime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+    <association property="briefBrand"
+                 javaType="com.zyb.mobileshop.entity.brief.BriefBrand">
+      <id property="brand_id" column="brand_id"/>
+      <result property="name" column="name"/>
+      <result property="logo" column="logo"/>
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, tag_id, brand_id, sort, creatime, modifytime
+  </sql>
+  <select id="selectByExample" parameterType="com.zyb.mobileshop.entity.MsTagBrandRefExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ms_tag_brand_ref
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ms_tag_brand_ref
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ms_tag_brand_ref
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zyb.mobileshop.entity.MsTagBrandRefExample">
+    delete from ms_tag_brand_ref
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zyb.mobileshop.entity.MsTagBrandRef">
+    insert into ms_tag_brand_ref (id, tag_id, brand_id, 
+      sort, creatime, modifytime
+      )
+    values (#{id,jdbcType=INTEGER}, #{tagId,jdbcType=INTEGER}, #{brandId,jdbcType=INTEGER}, 
+      #{sort,jdbcType=SMALLINT}, #{creatime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyb.mobileshop.entity.MsTagBrandRef">
+    insert into ms_tag_brand_ref
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tagId != null">
+        tag_id,
+      </if>
+      <if test="brandId != null">
+        brand_id,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="creatime != null">
+        creatime,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tagId != null">
+        #{tagId,jdbcType=INTEGER},
+      </if>
+      <if test="brandId != null">
+        #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=SMALLINT},
+      </if>
+      <if test="creatime != null">
+        #{creatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zyb.mobileshop.entity.MsTagBrandRefExample" resultType="java.lang.Long">
+    select count(*) from ms_tag_brand_ref
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ms_tag_brand_ref
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.tagId != null">
+        tag_id = #{record.tagId,jdbcType=INTEGER},
+      </if>
+      <if test="record.brandId != null">
+        brand_id = #{record.brandId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sort != null">
+        sort = #{record.sort,jdbcType=SMALLINT},
+      </if>
+      <if test="record.creatime != null">
+        creatime = #{record.creatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifytime != null">
+        modifytime = #{record.modifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ms_tag_brand_ref
+    set id = #{record.id,jdbcType=INTEGER},
+      tag_id = #{record.tagId,jdbcType=INTEGER},
+      brand_id = #{record.brandId,jdbcType=INTEGER},
+      sort = #{record.sort,jdbcType=SMALLINT},
+      creatime = #{record.creatime,jdbcType=TIMESTAMP},
+      modifytime = #{record.modifytime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyb.mobileshop.entity.MsTagBrandRef">
+    update ms_tag_brand_ref
+    <set>
+      <if test="tagId != null">
+        tag_id = #{tagId,jdbcType=INTEGER},
+      </if>
+      <if test="brandId != null">
+        brand_id = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=SMALLINT},
+      </if>
+      <if test="creatime != null">
+        creatime = #{creatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyb.mobileshop.entity.MsTagBrandRef">
+    update ms_tag_brand_ref
+    set tag_id = #{tagId,jdbcType=INTEGER},
+      brand_id = #{brandId,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=SMALLINT},
+      creatime = #{creatime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findRepeat" parameterType="map"
+          resultType="com.zyb.mobileshop.entity.MsTagBrandRef" resultMap="BaseResultMap">
+		select * from ms_tag_brand_ref
+		where tag_id=#{tagId}
+		and brand_id=#{brandId}
+	</select>
+
+  <!-- 标签品牌引用表和品牌表关联查询 -->
+  <select id="findUnionByTagId" parameterType="int"
+          resultMap="BaseResultMap">
+		select mtbr.*,mb.brand_id,mb.name,mb.logo
+		from ms_tag_brand_ref mtbr
+		 join ms_brand mb
+		on mtbr.brand_id=mb.brand_id
+		where mtbr.tag_id=#{tagId}
+		order by mtbr.sort desc
+	</select>
+</mapper>

@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mobileshop.dao.MsMemberMapper">
+    <resultMap id="BaseResultMap" type="com.zyb.mobileshop.entity.MsMember">
+        <id column="member_id" jdbcType="INTEGER" property="memberId"/>
+        <result column="uname" jdbcType="VARCHAR" property="uname"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="sex" jdbcType="SMALLINT" property="sex"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="regtime" jdbcType="TIMESTAMP" property="regtime"/>
+        <result column="lastlogin" jdbcType="TIMESTAMP" property="lastlogin"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    member_id, uname, password, email, sex, mobile, regtime, lastlogin, image
+  </sql>
+    <select id="selectByExample" parameterType="com.zyb.mobileshop.entity.MsMemberExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from ms_member
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ms_member
+        where member_id = #{memberId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ms_member
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.zyb.mobileshop.entity.MsMemberExample">
+        delete from ms_member
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.zyb.mobileshop.entity.MsMember">
+    insert into ms_member (member_id, uname, password, 
+      email, sex, mobile, 
+      regtime, lastlogin, image
+      )
+    values (#{memberId,jdbcType=INTEGER}, #{uname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{sex,jdbcType=SMALLINT}, #{mobile,jdbcType=VARCHAR}, 
+      #{regtime,jdbcType=TIMESTAMP}, #{lastlogin,jdbcType=TIMESTAMP}, #{image,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.zyb.mobileshop.entity.MsMember">
+        insert into ms_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="uname != null">
+                uname,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="regtime != null">
+                regtime,
+            </if>
+            <if test="lastlogin != null">
+                lastlogin,
+            </if>
+            <if test="image != null">
+                image,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="uname != null">
+                #{uname,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=SMALLINT},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="regtime != null">
+                #{regtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastlogin != null">
+                #{lastlogin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="image != null">
+                #{image,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.zyb.mobileshop.entity.MsMemberExample" resultType="java.lang.Long">
+        select count(*) from ms_member
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update ms_member
+        <set>
+            <if test="record.memberId != null">
+                member_id = #{record.memberId,jdbcType=INTEGER},
+            </if>
+            <if test="record.uname != null">
+                uname = #{record.uname,jdbcType=VARCHAR},
+            </if>
+            <if test="record.password != null">
+                password = #{record.password,jdbcType=VARCHAR},
+            </if>
+            <if test="record.email != null">
+                email = #{record.email,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sex != null">
+                sex = #{record.sex,jdbcType=SMALLINT},
+            </if>
+            <if test="record.mobile != null">
+                mobile = #{record.mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="record.regtime != null">
+                regtime = #{record.regtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.lastlogin != null">
+                lastlogin = #{record.lastlogin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.image != null">
+                image = #{record.image,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update ms_member
+        set member_id = #{record.memberId,jdbcType=INTEGER},
+        uname = #{record.uname,jdbcType=VARCHAR},
+        password = #{record.password,jdbcType=VARCHAR},
+        email = #{record.email,jdbcType=VARCHAR},
+        sex = #{record.sex,jdbcType=SMALLINT},
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+        regtime = #{record.regtime,jdbcType=TIMESTAMP},
+        lastlogin = #{record.lastlogin,jdbcType=TIMESTAMP},
+        image = #{record.image,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.zyb.mobileshop.entity.MsMember">
+        update ms_member
+        <set>
+            <if test="uname != null">
+                uname = #{uname,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=SMALLINT},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="regtime != null">
+                regtime = #{regtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastlogin != null">
+                lastlogin = #{lastlogin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="image != null">
+                image = #{image,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where member_id = #{memberId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.zyb.mobileshop.entity.MsMember">
+    update ms_member
+    set uname = #{uname,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=SMALLINT},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      regtime = #{regtime,jdbcType=TIMESTAMP},
+      lastlogin = #{lastlogin,jdbcType=TIMESTAMP},
+      image = #{image,jdbcType=VARCHAR}
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+    <!-- 根据id查询 -->
+    <select id="findById" parameterType="int"
+            resultType="com.zyb.mobileshop.entity.MsMember" resultMap="BaseResultMap">
+		select * from ms_member where member_id = #{memberId,jdbcType=INTEGER}
+	</select>
+    <!-- 根据email查询 -->
+    <select id="findByEmail" parameterType="string"
+            resultType="com.zyb.mobileshop.entity.MsMember" resultMap="BaseResultMap">
+		select * from ms_member where email=#{email}
+	</select>
+    <!-- 根据uname查询 -->
+    <select id="findByName" parameterType="string"
+            resultType="com.zyb.mobileshop.entity.MsMember" resultMap="BaseResultMap">
+		select * from ms_member where uname=#{uname}
+	</select>
+
+    <select id="dynamicFind" parameterType="map" resultType="com.zyb.mobileshop.entity.MsMember">
+        select * from ms_member
+        <where>
+            <if test="uname!=null">
+                uname = #{uname}
+            </if>
+            <if test="email!=null">
+                and email = #{email}
+            </if>
+            <if test="mobile!=null">
+                and mobile = #{mobile}
+            </if>
+        </where>
+    </select>
+</mapper>
