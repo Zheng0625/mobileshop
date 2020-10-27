@@ -15,8 +15,8 @@ spring:
     name: test
     url: jdbc:mysql://localhost:3306/mobile_shop?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8  #设置编码格式！！！否则可能会出现乱码！   serverTimezone 注意时区问题
                                           #在设定时区的时候，如果设定serverTimezone=UTC，会比中国时间早8个小时，如果在中国，可以选择Asia/Shanghai或者Asia/Hongkong
-    username: root
-    password: 1234
+    username:
+    password:
   thymeleaf:   #禁用缓存
     cache: false
 
